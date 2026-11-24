@@ -1,0 +1,94 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+Contacto | Lorenzo Watches
+{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <div class="container">
+        <p class="eyebrow">ESTAMOS PARA AYUDARTE</p>
+        <h1>Contacto</h1>
+    </div>
+</section>
+
+<section class="section container contact-layout">
+
+    <form method="post" class="contact-form">
+        {% csrf_token %}
+
+        {% if enviado %}
+            <p class="success">
+                ¡Gracias! Tu mensaje se guardó correctamente.
+            </p>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+            <div class="field-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <label for="{{ form.name.id_for_label }}">
+            Nombre
+        </label>
+
+        {{ form.name }}
+
+        {% if form.name.errors %}
+            <div class="field-errors">
+                {{ form.name.errors }}
+            </div>
+        {% endif %}
+
+        <label for="{{ form.email.id_for_label }}">
+            Correo electrónico
+        </label>
+
+        {{ form.email }}
+
+        {% if form.email.errors %}
+            <div class="field-errors">
+                {{ form.email.errors }}
+            </div>
+        {% endif %}
+
+        <label for="{{ form.message.id_for_label }}">
+            Mensaje
+        </label>
+
+        {{ form.message }}
+
+        {% if form.message.errors %}
+            <div class="field-errors">
+                {{ form.message.errors }}
+            </div>
+        {% endif %}
+
+        <button class="button" type="submit">
+            Enviar mensaje
+        </button>
+    </form>
+
+    <div class="contact-info">
+        <h2>Visítanos</h2>
+
+        <p>
+            Xicotencatl 203  
+
+            Ciudad Mante
+        </p>
+
+        <h3>Escríbenos</h3>
+
+        <p>
+            yosihdz7@gmail.com  
+
+            +52 833 255 0209
+        </p>
+    </div>
+
+</section>
+
+{% endblock %}

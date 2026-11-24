@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Lorenzo Watches{% endblock %}</title>
+  <meta name="description" content="Lorenzo Watches: relojes elegantes y precisos para cada momento.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="{% url 'catalog:home' %}"><img src="{% static 'catalog/images/logo.png' %}" alt="Lorenzo Watches"></a>
+      <button class="menu-button" id="menu-button" aria-label="Abrir menú">☰</button>
+      <nav class="main-nav" id="main-nav">
+        <a href="{% url 'catalog:home' %}">Inicio</a>
+        <a href="{% url 'catalog:catalog' %}">Catálogo</a>
+        <a href="{% url 'catalog:about' %}">Nosotros</a>
+        <a href="{% url 'catalog:contact' %}">Contacto</a>
+        <a class="cart-link" href="{% url 'catalog:cart' %}">Carrito <span id="cart-count">0</span></a>
+      </nav>
+    </div>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="site-footer">
+
+  <a
+    class="whatsapp-button"
+    href="https://wa.me/528332550209?text=Hola%20Lorenzo%20Watches,%20tengo%20una%20duda%20sobre%20un%20reloj."
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contactar por WhatsApp"
+>
+    WhatsApp
+</a>
+
+
+    <div class="container footer-grid">
+      <div><h3>Lorenzo Watches</h3><p>El tiempo, a tu estilo.</p></div>
+      <div><h4>Enlaces</h4><a href="{% url 'catalog:catalog' %}">Ver catálogo</a><a href="{% url 'catalog:contact' %}">Contáctanos</a></div>
+      <div><h4>Horario</h4><p>Lunes a sábado<br>9:00 a 18:00 h</p></div>
+    </div>
+    <p class="copyright">© 2026 Lorenzo Watches · Proyecto escolar con Django</p>
+  </footer>
+  <script src="{% static 'catalog/js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

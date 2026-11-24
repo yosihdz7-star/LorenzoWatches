@@ -1,0 +1,2 @@
+{% load static %}
+<article class="product-card"><a href="{% url 'catalog:product_detail' product.id %}"><div class="product-image"><img src="{% if product.image|slice:':1' == '/' %}{{ product.image }}{% else %}{% static 'catalog/images/rolex.jpg' %}{% endif %}" alt="{{ product.brand }} {{ product.name }}"></div><div class="product-info"><p class="product-brand">{{ product.brand }}</p><h3>{{ product.name }}</h3><p class="price">${{ product.price|floatformat:2 }}</p></div></a></article>

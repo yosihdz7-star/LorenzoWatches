@@ -1,0 +1,93 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+Catálogo | Lorenzo Watches
+{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <div class="container">
+        <p class="eyebrow">NUESTRA COLECCIÓN</p>
+        <h1>Catálogo</h1>
+        <p>Encuentra el reloj ideal para acompañar cada momento.</p>
+    </div>
+</section>
+
+<section class="section container">
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+            <article class="product-card">
+
+                <a href="{% url 'catalog:product_detail' product.id %}">
+
+                    <div class="product-image">
+                        <img
+                            src="{{ product.image }}"
+                            alt="{{ product.brand }} {{ product.name }}"
+                        >
+                    </div>
+
+                    <div class="product-info">
+
+                        <p class="product-brand">
+                            {{ product.brand }}
+                        </p>
+
+                        <h3>
+                            {{ product.name }}
+                        </h3>
+
+                        <p class="price">
+                            ${{ product.price|floatformat:2 }}
+                        </p>
+
+                        {% if product.stock > 0 %}
+
+                            <p class="stock">
+                                Disponible: {{ product.stock }} piezas
+                            </p>
+
+                        {% else %}
+
+                            <p class="stock out-of-stock">
+                                Agotado
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </a>
+
+                <button
+                    class="button"
+                    data-add-cart="{{ product.id }}"
+                    {% if product.stock == 0 %}disabled{% endif %}
+                >
+                    {% if product.stock > 0 %}
+                        Agregar al carrito
+                    {% else %}
+                        Agotado
+                    {% endif %}
+                </button>
+
+            </article>
+
+        {% empty %}
+
+            <p class="empty">
+                Aún no hay productos registrados.
+                Agrega relojes desde el administrador de Django.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

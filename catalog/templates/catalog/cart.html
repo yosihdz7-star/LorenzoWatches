@@ -1,0 +1,9 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Carrito | Lorenzo Watches{% endblock %}
+{% block content %}
+<section class="page-banner"><div class="container"><p class="eyebrow">TU SELECCIÓN</p><h1>Carrito</h1><p>Revisa tus piezas antes de confirmar el pedido.</p></div></section>
+<section class="section container cart-page">
+    <div id="cart-items"><p class="empty">Tu carrito está vacío.</p></div>
+    <div class="cart-summary"><h2>Resumen</h2><p>Subtotal <strong id="cart-total">$0.00</strong></p><a id="checkout-link" class="button disabled-link" href="{% url 'catalog:checkout' %}">Continuar compra</a><p class="small-note">El pago de esta práctica es ficticio.</p></div>
+</section>
+{% endblock %}
