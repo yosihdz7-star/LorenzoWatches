@@ -116,6 +116,7 @@ def checkout(request):
             return render(request, 'catalog/checkout.html', {'form': form})
 
         payment_label = order.get_payment_method_display()
+        
         send_mail(
             subject=f'Confirmación de pedido {order.order_number} - Lorenzo Watches',
             message=(
@@ -129,7 +130,7 @@ def checkout(request):
             ),
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[order.email],
-            fail_silently=True,
+            fail_silently=False,
         )
         return render(request, 'catalog/order_success.html', {'order': order})
 
