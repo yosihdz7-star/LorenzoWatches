@@ -1,40 +1,81 @@
 {% extends 'catalog/base.html' %}
+
 {% load static %}
 
-{% block title %}{{ product.name }} | Lorenzo Watches{% endblock %}
+{% block title %}
+{{ product.name }} | Lorenzo Watches
+{% endblock %}
 
 {% block content %}
+
 <section class="section container detail-layout">
+
     <div class="detail-image">
-        <img src="{{ product.image }}" alt="{{ product.brand }} {{ product.name }}">
+
+        <img
+            src="{% if product.image|slice:':7' == '/media/' %}/static/catalog/images/{{ product.image|slice:'7:' }}{% else %}{{ product.image }}{% endif %}"
+            alt="{{ product.brand }} {{ product.name }}"
+        >
+
     </div>
 
     <div class="detail-copy">
-        <p class="eyebrow">{{ product.brand }}</p>
-        <h1>{{ product.name }}</h1>
-        <p class="detail-price">${{ product.price|floatformat:2 }}</p>
+
+        <p class="eyebrow">
+            {{ product.brand }}
+        </p>
+
+        <h1>
+            {{ product.name }}
+        </h1>
+
+        <p class="detail-price">
+            ${{ product.price|floatformat:2 }}
+        </p>
 
         <p>
             {{ product.description|default:'Una pieza elegante, diseñada para acompañarte durante muchos años.' }}
         </p>
 
-        <p class="stock">
-            {% if product.stock > 0 %}
-                Disponible: {{ product.stock }} piezas
-            {% else %}
-                Agotado
-            {% endif %}
-        </p>
+        {% if product.stock > 0 %}
 
-        <button class="button"
+            <p class="stock">
+                Disponible:
+                {{ product.stock }}
+                piezas
+            </p>
+
+            <button
+                class="button"
                 data-add-cart="{{ product.id }}"
-                {% if product.stock == 0 %}disabled{% endif %}>
-            Agregar al carrito
-        </button>
+            >
+                Agregar al carrito
+            </button>
 
-        <a class="back-link" href="{% url 'catalog:catalog' %}">
+        {% else %}
+
+            <p class="stock out-of-stock">
+                Agotado
+            </p>
+
+            <button
+                class="button"
+                disabled
+            >
+                Agotado
+            </button>
+
+        {% endif %}
+
+        <a
+            class="back-link"
+            href="{% url 'catalog:catalog' %}"
+        >
             ← Volver al catálogo
         </a>
+
     </div>
+
 </section>
+
 {% endblock %}
