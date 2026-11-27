@@ -1,2 +1,70 @@
 {% load static %}
-<article class="product-card"><a href="{% url 'catalog:product_detail' product.id %}"><div class="product-image"><img src="{% if product.image|slice:':1' == '/' %}{{ product.image }}{% else %}{% static 'catalog/images/rolex.jpg' %}{% endif %}" alt="{{ product.brand }} {{ product.name }}"></div><div class="product-info"><p class="product-brand">{{ product.brand }}</p><h3>{{ product.name }}</h3><p class="price">${{ product.price|floatformat:2 }}</p></div></a></article>
+
+<article class="product-card">
+
+    <a href="{% url 'catalog:product_detail' product.id %}">
+
+        <div class="product-image">
+
+            <img
+                src="{% if product.image|slice:':7' == '/media/' %}/static/catalog/images/{{ product.image|slice:'7:' }}{% else %}{{ product.image }}{% endif %}"
+                alt="{{ product.brand }} {{ product.name }}"
+            >
+
+        </div>
+
+        <div class="product-info">
+
+            <p class="product-brand">
+                {{ product.brand }}
+            </p>
+
+            <h3>
+                {{ product.name }}
+            </h3>
+
+            <p class="price">
+                ${{ product.price|floatformat:2 }}
+            </p>
+
+            {% if product.stock > 0 %}
+
+                <p class="stock">
+                    Disponible:
+                    {{ product.stock }}
+                    piezas
+                </p>
+
+            {% else %}
+
+                <p class="stock out-of-stock">
+                    Agotado
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </a>
+
+    {% if product.stock > 0 %}
+
+        <button
+            class="button"
+            data-add-cart="{{ product.id }}"
+        >
+            Agregar al carrito
+        </button>
+
+    {% else %}
+
+        <button
+            class="button"
+            disabled
+        >
+            Agotado
+        </button>
+
+    {% endif %}
+
+</article>
