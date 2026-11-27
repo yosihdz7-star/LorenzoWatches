@@ -1,5 +1,7 @@
 {% extends 'catalog/base.html' %}
 
+{% load static %}
+
 {% block title %}
 Catálogo | Lorenzo Watches
 {% endblock %}
@@ -9,8 +11,12 @@ Catálogo | Lorenzo Watches
 <section class="page-banner">
     <div class="container">
         <p class="eyebrow">NUESTRA COLECCIÓN</p>
+
         <h1>Catálogo</h1>
-        <p>Encuentra el reloj ideal para acompañar cada momento.</p>
+
+        <p>
+            Encuentra el reloj ideal para acompañar cada momento.
+        </p>
     </div>
 </section>
 
@@ -25,10 +31,12 @@ Catálogo | Lorenzo Watches
                 <a href="{% url 'catalog:product_detail' product.id %}">
 
                     <div class="product-image">
+
                         <img
-                            src="{{ product.image }}"
+                            src="{% if product.image|slice:':7' == '/media/' %}/static/catalog/images/{{ product.image|slice:'7:' }}{% else %}{{ product.image }}{% endif %}"
                             alt="{{ product.brand }} {{ product.name }}"
                         >
+
                     </div>
 
                     <div class="product-info">
@@ -48,7 +56,9 @@ Catálogo | Lorenzo Watches
                         {% if product.stock > 0 %}
 
                             <p class="stock">
-                                Disponible: {{ product.stock }} piezas
+                                Disponible:
+                                {{ product.stock }}
+                                piezas
                             </p>
 
                         {% else %}
@@ -63,17 +73,25 @@ Catálogo | Lorenzo Watches
 
                 </a>
 
-                <button
-                    class="button"
-                    data-add-cart="{{ product.id }}"
-                    {% if product.stock == 0 %}disabled{% endif %}
-                >
-                    {% if product.stock > 0 %}
+                {% if product.stock > 0 %}
+
+                    <button
+                        class="button"
+                        data-add-cart="{{ product.id }}"
+                    >
                         Agregar al carrito
-                    {% else %}
+                    </button>
+
+                {% else %}
+
+                    <button
+                        class="button"
+                        disabled
+                    >
                         Agotado
-                    {% endif %}
-                </button>
+                    </button>
+
+                {% endif %}
 
             </article>
 
