@@ -1,5 +1,6 @@
 import json
 import secrets
+import logging
 from decimal import Decimal
 
 from django.conf import settings
@@ -13,6 +14,8 @@ from rest_framework import viewsets
 from .forms import CheckoutForm, ContactMessageForm
 from .models import Order, OrderItem, Product
 from .serializers import ProductSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -117,21 +120,34 @@ def checkout(request):
 
         payment_label = order.get_payment_method_display()
         
-        send_mail(
-            subject=f'Confirmación de pedido {order.order_number} - Lorenzo Watches',
-            message=(
-                f'Hola {order.customer_name},\n\n'
-                f'Tu pedido {order.order_number} fue registrado correctamente.\n'
-                f'Total: ${order.total:,.2f}\n'
-                f'Forma de pago: {payment_label} (ficticia)\n'
-                f'Envío: {order.address}, {order.city}, {order.state}, C.P. {order.postal_code}\n\n'
-                'Este proyecto utiliza pagos simulados; no se realizó ningún cargo real.\n\n'
-                'Gracias por comprar en Lorenzo Watches.'
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[order.email],
-            fail_silently=False,
-        )
-        return render(request, 'catalog/order_success.html', {'order': order})
+        try:
+            send_mail(
+                subject=f'Confirmación de pedido {order.order_number} - Lorenzo Watches',
+                message=(
+                    f'Hola {order.customer_name},\n\n'
+                    f'Tu pedido {order.order_number} fue registrado correctamente.\n'
+                    f'Total: ${order.total:,.2f}\n'
+                    f'Forma de pago: {payment_label} (ficticia)\n'
+                    f'Envío: {order.address}, {order.city}, {order.state}, '
+                    f'C.P. {order.postal_code}\n\n'
+                    'Este proyecto utiliza pagos simulados; no se realizó ningún cargo real.\n\n'
+                    'Gracias por comprar en Lorenzo Watches.'
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[order.email],
+                fail_silently=False,
+            )
 
-    return render(request, 'catalog/checkout.html', {'form': CheckoutForm()})
+            email_sent = True
+
+        except Exception:
+            logger.exception(
+                'No se pudo enviar el correo de confirmación del pedido %s',
+                order.order_number
+            )
+            email_sent = False
+
+        return render(request, 'catalog/success.html', {
+            'order': order,
+            'email_sent': email_sent,
+        })
