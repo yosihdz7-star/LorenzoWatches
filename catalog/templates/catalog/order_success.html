@@ -1,6 +1,6 @@
 {% extends 'catalog/base.html' %}
 {% block title %}Pedido confirmado | Lorenzo Watches{% endblock %}
 {% block content %}
-<section class="section container success-page"><div class="success-icon">✓</div><p class="eyebrow">COMPRA SIMULADA COMPLETADA</p><h1>¡Gracias por tu compra!</h1><p>Tu pedido fue registrado correctamente y se envió una confirmación al correo <strong>{{ order.email }}</strong>.</p><div class="order-card"><p>Número de pedido</p><h2>{{ order.order_number }}</h2><p>Total: <strong>${{ order.total|floatformat:2 }}</strong></p><p>Pago: {{ order.get_payment_method_display }} — ficticio, sin cargo real.</p></div><a class="button" href="{% url 'catalog:home' %}">Volver al inicio</a></section>
+<section class="section container success-page"><div class="success-icon">✓</div><p class="eyebrow">COMPRA SIMULADA COMPLETADA</p><h1>¡Gracias por tu compra!</h1><p>Tu pedido fue registrado correctamente. {% if email_sent %}Enviamos una confirmación al correo <strong>{{ order.email }}</strong>.{% else %}No pudimos enviar el correo en este momento, pero tu pedido quedó registrado.{% endif %}</p><div class="order-card"><p>Número de pedido</p><h2>{{ order.order_number }}</h2><p>Total: <strong>${{ order.total|floatformat:2 }}</strong></p><p>Pago: {{ order.get_payment_method_display }} — ficticio, sin cargo real.</p></div><a class="button" href="{% url 'catalog:home' %}">Volver al inicio</a></section>
 {% endblock %}
 {% block extra_js %}<script>localStorage.removeItem('lorenzo_cart'); updateCartCount();</script>{% endblock %}
